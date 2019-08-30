@@ -35,6 +35,8 @@ can be passed to metafunctions
 
 `range_c`: A range of `T`s, you can specify the step.
 
+`literals`(namespace): `operator ""_cl` to quickly create `char_list`s
+
 The latter two have `using` declarations for common type such as `int` and `bool`
 
 ### Algorithms

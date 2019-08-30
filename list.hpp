@@ -58,6 +58,12 @@ namespace ML
     template<char c1, char c2, char d = 1> using char_range = range_c<char, c1, c2, d>;
     template<length_t l1, length_t l2, length_t d = 1> using index_range = range_c<length_t, l1, l2, d>;
 
+    namespace literal
+    {
+        // User-defined literals to create char_lists
+        template<char... cs> constexpr char_list<cs...> operator ""_cl () {return {};}
+    } // namespace literal
+
     // conditional: select from two values
     template<typename B, typename T, typename F> struct conditional;
     template<typename T, typename F>
