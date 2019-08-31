@@ -578,31 +578,19 @@ namespace ML
     {
     private:
         // Helpers
-        template<typename V> struct lt;
-        template<T v>
-        struct lt<wrapper_t<T, v>> : public bool_t<(v < v1)>
-        {};
         template<typename V>
-        using lt_t = bool_t<lt<V>::value>;
-        template<typename V> struct eq;
-        template<T v>
-        struct eq<wrapper_t<T, v>> : public bool_t<(v == v1)>
-        {};
+        using lt = bool_t<(V::value < v1)>;
         template<typename V>
-        using eq_t = bool_t<eq<V>::value>;
-        template<typename V> struct gt;
-        template<T v>
-        struct gt<wrapper_t<T, v>> : public bool_t<(v > v1)>
-        {};
+        using eq = bool_t<(V::value == v1)>;
         template<typename V>
-        using gt_t = bool_t<gt<V>::value>;
+        using gt = bool_t<(V::value > v1)>;
 
     private:
         // 3 Parts
         using rest = list_c<T, vs...>;
-        using lower = typename sort<select_t<rest, lt_t>>::type;
-        using equal = select_t<rest, eq_t>; // no need to sort
-        using great = typename sort<select_t<rest, gt_t>>::type;
+        using lower = typename sort<select_t<rest, lt>>::type;
+        using equal = select_t<rest, eq>; // no need to sort
+        using great = typename sort<select_t<rest, gt>>::type;
 
     public:
         using type = join_t<lower, list_c<T, v1>, equal, great>;
@@ -700,7 +688,7 @@ namespace ML
     template<template<typename> typename F, typename L>
     struct map<F, L, 0>
     {
-        using type = L;
+        using type = F<L>;
     };
     template<template<typename> typename F, typename... Ts, length_t n>
     struct map<F, list<Ts...>, n>
